@@ -1,6 +1,10 @@
 package com.capstoneproject.employeecertificationbackend.models;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 
 @Entity(name = "employee")
@@ -9,15 +13,17 @@ public class Employee {
 
     @Id
     @SequenceGenerator(
-            name="employee_sequence",
-            sequenceName = "employee_sequence"
+            name = "employee_sequence",
+            sequenceName = "employee_sequence",
+            initialValue = 1001,
+            allocationSize = 10
     )
     @GeneratedValue(
-            generator ="employee_sequence",
-            strategy =GenerationType.SEQUENCE
+            generator = "employee_sequence",
+            strategy = GenerationType.SEQUENCE
     )
     @Column(
-            name = "emp_id",
+            name = "employee_id",
             nullable = false,
             updatable = false
     )
@@ -40,6 +46,7 @@ public class Employee {
             name = "password",
             nullable = false
     )
+    @JsonIgnore
     private String password;
     @Column(
             name = "phone_number",
@@ -51,6 +58,13 @@ public class Employee {
             nullable = false
     )
     private String empType;
+
+    @ManyToOne
+    @JoinColumn(
+            name = "manager_id",
+            referencedColumnName = "manager_id",
+            nullable = false)
+    private Manager manager;
 
     public Employee() {
     }
@@ -109,6 +123,16 @@ public class Employee {
 
     public void setEmpType(String empType) {
         this.empType = empType;
+    }
+
+
+    @JsonBackReference
+    public Manager getManager() {
+        return manager;
+    }
+
+    public void setManager(Manager manager) {
+        this.manager = manager;
     }
 
     @Override

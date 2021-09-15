@@ -2,7 +2,7 @@ package com.capstoneproject.employeecertificationbackend.service;
 
 
 import com.capstoneproject.employeecertificationbackend.models.Question;
-import com.capstoneproject.employeecertificationbackend.models.QuestionBank;
+import com.capstoneproject.employeecertificationbackend.models.QuestionForm;
 import com.capstoneproject.employeecertificationbackend.repo.QuestionRepository;
 import com.capstoneproject.employeecertificationbackend.repo.QuestionResultRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,16 +18,16 @@ public class QuizService {
 
     private final QuestionRepository questionRepository;
     private final QuestionResultRepository questionResultRepository;
-    private final QuestionBank questionBank;
+    private final QuestionForm questionForm;
 
     @Autowired
-    public QuizService(QuestionRepository questionRepository, QuestionResultRepository questionResultRepository, QuestionBank questionBank) {
+    public QuizService(QuestionRepository questionRepository, QuestionResultRepository questionResultRepository, QuestionForm questionForm) {
         this.questionRepository = questionRepository;
         this.questionResultRepository = questionResultRepository;
-        this.questionBank = questionBank;
+        this.questionForm = questionForm;
     }
 
-    public QuestionBank getQuestions() {
+    public QuestionForm getQuestions() {
         List<Question> allQues = questionRepository.findAll();
         List<Question> qList = new ArrayList<>();
 
@@ -39,12 +39,12 @@ public class QuizService {
             allQues.remove(rand);
         }
 
-        questionBank.setQuestions(qList);
+        questionForm.setQuestions(qList);
 
-        return questionBank;
+        return questionForm;
     }
 
-    public int getResult(QuestionBank qBank) {
+    public int getResult(QuestionForm qBank) {
         int correct = 0;
 
         for(Question q: qBank.getQuestions())

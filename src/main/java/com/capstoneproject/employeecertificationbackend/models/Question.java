@@ -94,4 +94,18 @@ public class Question {
     public void setChosen(int chosen) {
         this.chosen = chosen;
     }
+
+    @Override
+    public String toString() {
+        return "Question{" +
+                "quesId=" + quesId +
+                ", title='" + title + '\'' +
+                ", optionA='" + optionA + '\'' +
+                ", optionB='" + optionB + '\'' +
+                ", optionC='" + optionC + '\'' +
+                ", optionD='" + optionD + '\'' +
+                ", ans=" + ans +
+                ", chosen=" + chosen +
+                '}';
+    }
 }

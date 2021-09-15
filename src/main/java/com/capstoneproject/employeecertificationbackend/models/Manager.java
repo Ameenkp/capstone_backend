@@ -1,17 +1,25 @@
 package com.capstoneproject.employeecertificationbackend.models;
 
-import javax.persistence.*;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
-@Entity
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
+
+@Entity(name = "manager")
+@Table(name = "manager")
 public class Manager {
 
     @Id
     @SequenceGenerator(
-            name="employee_sequence",
-            sequenceName = "employee_sequence"
+            name="manager_sequence",
+            sequenceName = "manager_sequence",
+            initialValue = 2000,
+            allocationSize = 10
     )
     @GeneratedValue(
-            generator ="employee_sequence",
+            generator ="manager_sequence",
             strategy = GenerationType.SEQUENCE
     )
     @Column(
@@ -33,12 +41,17 @@ public class Manager {
     )
     private String email;
 
+    @JsonIgnore
     @Column(
             name="password",
             nullable = false
     )
     private String password;
-
+    @Column(
+            name = "phone_number",
+            nullable = false
+    )
+    private String phoneNumber;
 
     @Column(
             name = "emp_type",
@@ -46,14 +59,27 @@ public class Manager {
     )
     private String empType;
 
+    @OneToMany(mappedBy = "manager",
+            cascade=CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.LAZY)
+    private List<Employee> reportees = new ArrayList<>();
+
+    @ManyToOne
+    @JoinColumn(
+            name = "admin_id",
+            referencedColumnName = "admin_id",
+            nullable = false)
+    private Admin admin;
+
     public Manager() {
     }
 
-    public Manager(long manager_id, String name, String email, String password, String empType) {
-        this.manager_id = manager_id;
+    public Manager(String name, String email, String password, String phoneNumber, String empType) {
         this.name = name;
         this.email = email;
         this.password = password;
+        this.phoneNumber = phoneNumber;
         this.empType = empType;
     }
 
@@ -89,6 +115,14 @@ public class Manager {
         this.password = password;
     }
 
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
     public String getEmpType() {
         return empType;
     }
@@ -106,5 +140,30 @@ public class Manager {
                 ", password='" + password + '\'' +
                 ", empType='" + empType + '\'' +
                 '}';
+    }
+
+//    @JsonBackReference
+    public List<Employee> getReportees() {
+        return reportees;
+    }
+
+    public void addReportee(Employee employee) {
+        if (!this.reportees.contains(employee)){
+            this.reportees.add(employee);
+        }
+    }
+    public void removeReportee(Employee employee){
+        if (this.reportees.contains(employee)){
+            this.reportees.remove(employee);
+        }
+    }
+
+    @JsonBackReference
+    public Admin getAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(Admin admin) {
+        this.admin = admin;
     }
 }

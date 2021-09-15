@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class QuestionBank {
+public class QuestionForm {
 
     private List<Question> questions;
 

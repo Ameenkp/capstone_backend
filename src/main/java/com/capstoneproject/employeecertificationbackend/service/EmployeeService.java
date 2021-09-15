@@ -35,54 +35,54 @@ public class EmployeeService {
         this.managerRepository = managerRepository;
         this.adminRepository = adminRepository;
     }
-
-    @PostConstruct
-    @Transactional
-    public void initDB() throws UserNotFoundException {
-        Faker faker = new Faker();
-
-
-        Admin admin = new Admin("admin","admin123@adp.com",faker.internet().password());
-
-
-        Manager manager1 = new Manager(
-                "sudappi",
-                "sudappi@adp.com",
-                "pass123",
-                "1234566",
-                "manager");
-        manager1.setAdmin(admin);
-        admin.getManagers().add(manager1);
-
-        //student creation using faker
-        String name = faker.name().fullName();
-        String email = String.format("%s@ADP.com", name);
-        String password = faker.internet().password();
-        String phoneNumber = faker.phoneNumber().phoneNumber();
-        String empType = "employee";
-        Employee employee1 = new Employee(name,
-                email,
-                password,
-                phoneNumber,
-                empType);
-
-        manager1.addReportee(employee1);
-        employee1.setManager(manager1);
-
-        Employee employee2 = new Employee(
-                "sugunan",
-                "sugunan@adp.com",
-                faker.internet().password(),
-                faker.phoneNumber().phoneNumber(),
-                "employee");
-        manager1.addReportee(employee2);
-        employee2.setManager(manager1);
-
-//        managerRepository.save(manager1);
-        adminRepository.save(admin);
-
-
-    }
+//
+//    @PostConstruct
+//    @Transactional
+//    public void initDB() throws UserNotFoundException {
+//        Faker faker = new Faker();
+//
+//
+//        Admin admin = new Admin("admin","admin123@adp.com",faker.internet().password());
+//
+//
+//        Manager manager1 = new Manager(
+//                "sudappi",
+//                "sudappi@adp.com",
+//                "pass123",
+//                "1234566",
+//                "manager");
+//        manager1.setAdmin(admin);
+//        admin.getManagers().add(manager1);
+//
+//        //student creation using faker
+//        String name = faker.name().fullName();
+//        String email = String.format("%s@ADP.com", name);
+//        String password = faker.internet().password();
+//        String phoneNumber = faker.phoneNumber().phoneNumber();
+//        String empType = "employee";
+//        Employee employee1 = new Employee(name,
+//                email,
+//                password,
+//                phoneNumber,
+//                empType);
+//
+//        manager1.addReportee(employee1);
+//        employee1.setManager(manager1);
+//
+//        Employee employee2 = new Employee(
+//                "sugunan",
+//                "sugunan@adp.com",
+//                faker.internet().password(),
+//                faker.phoneNumber().phoneNumber(),
+//                "employee");
+//        manager1.addReportee(employee2);
+//        employee2.setManager(manager1);
+//
+////        managerRepository.save(manager1);
+//        adminRepository.save(admin);
+//
+//
+//    }
 
 
     @Transactional

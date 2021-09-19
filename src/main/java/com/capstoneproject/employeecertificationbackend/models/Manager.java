@@ -4,12 +4,14 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity(name = "manager")
 @Table(name = "manager")
-public class Manager {
+public class Manager implements Serializable {
 
     @Id
     @SequenceGenerator(
@@ -39,6 +41,7 @@ public class Manager {
             nullable = false,
             unique = true
     )
+    @Email
     private String email;
 
     @JsonIgnore

@@ -26,10 +26,16 @@ public class AdminService {
     }
 
 
-    public List<Manager> retrieveAllManagers(Long id) throws UserNotFoundException {
+    public List<Manager> retrieveAllManagers(String name) throws UserNotFoundException {
 
-        Admin admin = adminRepository.findById(id).orElseThrow(UserNotFoundException::new);
+        Admin admin = adminRepository.findAdminByName(name).orElseThrow(UserNotFoundException::new);
 
         return managerRepository.findAllByAdmin(admin);
     }
+
+    public Admin findAdminByName(String name) throws UserNotFoundException {
+        return adminRepository.findAdminByName(name).orElseThrow(UserNotFoundException::new);
+
+    }
+
 }

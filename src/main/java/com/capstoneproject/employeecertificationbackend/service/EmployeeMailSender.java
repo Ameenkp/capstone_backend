@@ -18,12 +18,12 @@ public class EmployeeMailSender {
     }
 
 
-    public void sendEmail(Employee employee) {
+    public void sendEmail(String email, String password) {
             SimpleMailMessage msg = new SimpleMailMessage();
-            msg.setTo(employee.getEmail());
+            msg.setTo(email);
             msg.setSubject("Successfully Created User");
-            msg.setText("Change Password With this URL :"+"http://localhost:8080/api/empManagement/users/addUser"+"\n"
-            +"Password :"+employee.getPassword());
+            msg.setText("You Can Login Here :"+"http://localhost:4200/login"+"\n"
+            +"Password :"+password);
             javaMailSender.send(msg);
     }
 }

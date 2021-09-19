@@ -20,7 +20,8 @@ public class ManagerConfig {
             Admin admin1 = new Admin(
                     "admin",
                     "Admin@ADP.com",
-                    "admin123"
+                    "admin",
+                    "admin"
             );
 
 

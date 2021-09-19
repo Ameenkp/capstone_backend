@@ -7,13 +7,14 @@ import com.capstoneproject.employeecertificationbackend.service.EmployeeService;
 import com.capstoneproject.employeecertificationbackend.service.ManagerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
 import java.util.List;
 
 @RestController
-@RequestMapping("api/manager")
+@RequestMapping("api")
 public class ManagerController {
 
     private final EmployeeService employeeService;
@@ -25,11 +26,14 @@ public class ManagerController {
         this.managerService = managerService;
     }
 
-    @ResponseStatus(HttpStatus.OK)
-    @GetMapping("{id}")
-    public List<Employee> getUsers(@PathVariable("id") Long id){
+    @GetMapping("manager/{name}/employees")
+    public ResponseEntity<List<Employee>> getAllEmployeesUnderManager(@PathVariable("name") String name){
 
-        return employeeService.retrieveAllUsersUnderManager(id);
+        List<Employee> employees = employeeService.retrieveAllUsersUnderManager(name);
+        if(employees.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(employees,HttpStatus.OK);
     }
 
     @GetMapping("getmanagers")

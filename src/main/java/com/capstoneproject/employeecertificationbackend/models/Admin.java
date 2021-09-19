@@ -12,13 +12,13 @@ public class Admin {
 
     @Id
     @SequenceGenerator(
-            name="admin_sequence",
+            name = "admin_sequence",
             sequenceName = "admin_sequence",
             initialValue = 5000,
             allocationSize = 10
     )
     @GeneratedValue(
-            generator ="admin_sequence",
+            generator = "admin_sequence",
             strategy = GenerationType.SEQUENCE
     )
     @Column(
@@ -41,13 +41,18 @@ public class Admin {
 
     @JsonIgnore
     @Column(
-            name="password",
+            name = "password",
             nullable = false
     )
     private String password;
+    @Column(
+            name = "emp_type",
+            nullable = false
+    )
+    private String empType;
 
     @OneToMany(mappedBy = "admin",
-            cascade=CascadeType.ALL,
+            cascade = CascadeType.ALL,
             orphanRemoval = true,
             fetch = FetchType.LAZY)
     private List<Manager> managers = new ArrayList<>();
@@ -56,10 +61,11 @@ public class Admin {
     public Admin() {
     }
 
-    public Admin(String name, String email, String password) {
+    public Admin(String name, String email, String password, String empType) {
         this.name = name;
         this.email = email;
         this.password = password;
+        this.empType = empType;
     }
 
     public Long getAdmin_id() {
@@ -101,6 +107,14 @@ public class Admin {
 
     public void setManagers(List<Manager> managers) {
         this.managers = managers;
+    }
+
+    public String getEmpType() {
+        return empType;
+    }
+
+    public void setEmpType(String empType) {
+        this.empType = empType;
     }
 
     @Override

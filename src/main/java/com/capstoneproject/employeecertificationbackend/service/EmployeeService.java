@@ -1,6 +1,7 @@
 package com.capstoneproject.employeecertificationbackend.service;
 
 
+import com.capstoneproject.employeecertificationbackend.dto.EmployeeDto;
 import com.capstoneproject.employeecertificationbackend.exception.UserNotFoundException;
 import com.capstoneproject.employeecertificationbackend.models.Admin;
 import com.capstoneproject.employeecertificationbackend.models.Employee;
@@ -19,6 +20,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional
 public class EmployeeService {
 
     private final EmployeeRepository employeeRepository;
@@ -35,88 +37,141 @@ public class EmployeeService {
         this.managerRepository = managerRepository;
         this.adminRepository = adminRepository;
     }
-//
-//    @PostConstruct
-//    @Transactional
-//    public void initDB() throws UserNotFoundException {
-//        Faker faker = new Faker();
-//
-//
-//        Admin admin = new Admin("admin","admin123@adp.com",faker.internet().password());
-//
-//
-//        Manager manager1 = new Manager(
-//                "sudappi",
-//                "sudappi@adp.com",
-//                "pass123",
-//                "1234566",
-//                "manager");
-//        manager1.setAdmin(admin);
-//        admin.getManagers().add(manager1);
-//
-//        //student creation using faker
-//        String name = faker.name().fullName();
-//        String email = String.format("%s@ADP.com", name);
-//        String password = faker.internet().password();
-//        String phoneNumber = faker.phoneNumber().phoneNumber();
-//        String empType = "employee";
-//        Employee employee1 = new Employee(name,
-//                email,
-//                password,
-//                phoneNumber,
-//                empType);
-//
-//        manager1.addReportee(employee1);
-//        employee1.setManager(manager1);
-//
-//        Employee employee2 = new Employee(
-//                "sugunan",
-//                "sugunan@adp.com",
-//                faker.internet().password(),
-//                faker.phoneNumber().phoneNumber(),
-//                "employee");
-//        manager1.addReportee(employee2);
-//        employee2.setManager(manager1);
-//
-////        managerRepository.save(manager1);
-//        adminRepository.save(admin);
-//
-//
-//    }
+
+    @PostConstruct
+    @Transactional
+    public void initDB() throws UserNotFoundException {
+        Faker faker = new Faker();
+
+
+        Admin admin = new Admin("admin",
+                "admin123@adp.com",
+                faker.internet().password(),
+                "admin");
+
+
+        Manager manager1 = new Manager(
+                "sudappi",
+                "sudappi@adp.com",
+                "pass123",
+                "1234566",
+                "manager");
+        manager1.setAdmin(admin);
+        admin.getManagers().add(manager1);
+
+        //student creation using faker
+        String name = faker.name().fullName();
+        String email = String.format("%s@ADP.com", name);
+        String password = faker.internet().password();
+        String phoneNumber = faker.phoneNumber().phoneNumber();
+        String empType = "employee";
+        Employee employee1 = new Employee(name,
+                email,
+                password,
+                phoneNumber,
+                empType);
+
+        manager1.addReportee(employee1);
+        employee1.setManager(manager1);
+
+        Employee employee2 = new Employee(
+                "sugunan",
+                "sugunan@adp.com",
+                faker.internet().password(),
+                faker.phoneNumber().phoneNumber(),
+                "employee");
+        manager1.addReportee(employee2);
+        employee2.setManager(manager1);
+
+//        managerRepository.save(manager1);
+        adminRepository.save(admin);
+
+
+    }
 
 
     @Transactional
-    public int createNewUser(Employee employee) throws UserNotFoundException {
+    public Employee createNewUser(EmployeeDto employee) throws UserNotFoundException {
+
+        Employee newEmployee = new Employee();
+        newEmployee.setName(employee.getName());
+        newEmployee.setEmail(employee.getEmail());
+        newEmployee.setEmpType(employee.getEmpType());
+        newEmployee.setPhoneNumber(employee.getPhoneNumber());
+//        newEmployee.setManager(employee.);
 
         Optional<Employee> employeeByEmail = employeeRepository.findEmployeeByEmail(employee.getEmail());
         if (employeeByEmail.isEmpty()) {
-            employee.setPassword(employeePasswordGeneratorService.generateCommonLangPassword());
+            newEmployee.setPassword(employeePasswordGeneratorService.generateCommonLangPassword());
             Manager byId = managerRepository.findById(2001L).orElseThrow(UserNotFoundException::new);
 
-            byId.addReportee(employee);
-            employee.setManager(byId);
-            managerRepository.save(byId);
+            byId.addReportee(newEmployee);
+            newEmployee.setManager(byId);
+            Employee save = employeeRepository.save(newEmployee);
+
 
             try {
-                employeeMailSender.sendEmail(employee);
+                employeeMailSender.sendEmail(newEmployee.getEmail(), newEmployee.getPassword());
             } catch (MailException mailException) {
                 mailException.getMessage();
             }
-            return 1;
+            return save;
         }
-        return 0;
-
+        return null;
     }
 
 
     public List<Employee> retrieveAllUsers() {
-
         return employeeRepository.findAll();
     }
 
-    public List<Employee> retrieveAllUsersUnderManager(Long id) {
-
-        Optional<Manager> byId = managerRepository.findById(id);
+    public List<Employee> retrieveAllUsersUnderManager(String name) {
+        Optional<Manager> byId = managerRepository.findManagerByName(name);
         return employeeRepository.findAllByManager(byId);
+    }
+
+    public EmployeeDto getEmployeeByEmailAndPassword(String email, String password) {
+        EmployeeDto employeeDto = new EmployeeDto();
+
+        if (employeeRepository.findEmployeeByEmail(email).stream().anyMatch(user -> user.getPassword().equals(password))) {
+            Employee employee = employeeRepository.findEmployeeByEmail(email).get();
+            employeeDto.setId(employee.getEmployee_id());
+            employeeDto.setEmail(employee.getEmail());
+            employeeDto.setPassword(employee.getPassword());
+            employeeDto.setName(employee.getName());
+            employeeDto.setEmpType(employee.getEmpType());
+
+            return employeeDto;
+        } else if (managerRepository.findManagerByEmail(email).stream().anyMatch(user -> user.getPassword().equals(password))) {
+            Manager employee = managerRepository.findManagerByEmail(email).get();
+            employeeDto.setId(employee.getManager_id());
+            employeeDto.setEmail(employee.getEmail());
+            employeeDto.setPassword(employee.getPassword());
+            employeeDto.setName(employee.getName());
+            employeeDto.setEmpType(employee.getEmpType());
+
+            return employeeDto;
+        } else if (adminRepository.findAdminByEmail(email).stream().anyMatch(user -> user.getPassword().equals(password))) {
+            Admin employee = adminRepository.findAdminByEmail(email).get();
+            employeeDto.setId(employee.getAdmin_id());
+            employeeDto.setEmail(employee.getEmail());
+            employeeDto.setPassword(employee.getPassword());
+            employeeDto.setName(employee.getName());
+            employeeDto.setEmpType(employee.getEmpType());
+
+            return employeeDto;
+        }
+        return null;
+    }
+
+
+    public Employee updateEmployee(Long id, EmployeeDto employee) throws UserNotFoundException {
+        Employee byId = employeeRepository.findById(id).orElseThrow(UserNotFoundException::new);
+        byId.setEmail(employee.getEmail());
+        byId.setName(employee.getName());
+        byId.setPhoneNumber(employee.getPhoneNumber());
+        employeeRepository.save(byId);
+
+        return byId;
     }
 }

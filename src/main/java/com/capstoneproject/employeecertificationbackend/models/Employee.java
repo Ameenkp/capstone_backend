@@ -59,6 +59,12 @@ public class Employee {
     )
     private String empType;
 
+    @Column(name = "first_login")
+    private boolean firstLogin;
+
+    @Column(name="token")
+    private String token;
+
     @ManyToOne
     @JoinColumn(
             name = "manager_id",
@@ -125,6 +131,21 @@ public class Employee {
         this.empType = empType;
     }
 
+    public boolean isFirstLogin() {
+        return firstLogin;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public void setFirstLogin(boolean firstLogin) {
+        this.firstLogin = firstLogin;
+    }
 
     @JsonBackReference
     public Manager getManager() {

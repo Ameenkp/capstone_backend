@@ -2,6 +2,7 @@ package com.capstoneproject.employeecertificationbackend.service;
 
 
 import com.capstoneproject.employeecertificationbackend.dto.EmployeeDto;
+import com.capstoneproject.employeecertificationbackend.dto.PasswordResetDto;
 import com.capstoneproject.employeecertificationbackend.exception.UserNotFoundException;
 import com.capstoneproject.employeecertificationbackend.models.Admin;
 import com.capstoneproject.employeecertificationbackend.models.Employee;
@@ -16,8 +17,10 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
+import java.net.MalformedURLException;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @Transactional
@@ -86,6 +89,28 @@ public class EmployeeService {
 //        managerRepository.save(manager1);
         adminRepository.save(admin);
 
+
+    }
+
+
+    public Optional<Employee> sendPasswordResetLinkToEmployee(PasswordResetDto passwordResetDto){
+
+        Optional<Employee> employeeByEmail = employeeRepository.findEmployeeByEmail(passwordResetDto.getEmail());
+        if(employeeByEmail.isPresent()){
+            String token = UUID.randomUUID().toString();
+            employeeByEmail.get().setToken(token);
+            String url = passwordResetDto.getResetURI() +
+                    "/changePassword?token=" + token+
+                    "email?="+passwordResetDto.getEmail();
+            try {
+                employeeMailSender.sendEmailToResetPassword(passwordResetDto.getEmail(),url);
+            } catch (MailException | MalformedURLException e) {
+                e.getMessage();
+            }
+            return employeeByEmail;
+
+        }
+        return Optional.empty();
 
     }
 

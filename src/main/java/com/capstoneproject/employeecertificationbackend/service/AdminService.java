@@ -34,8 +34,7 @@ public class AdminService {
     }
 
     public Admin findAdminByName(String name) throws UserNotFoundException {
-        return adminRepository.findAdminByName(name).orElseThrow(UserNotFoundException::new);
-
+        Admin admin = adminRepository.findAdminByName(name).orElseThrow(UserNotFoundException::new);
+        return admin;
     }
-
 }

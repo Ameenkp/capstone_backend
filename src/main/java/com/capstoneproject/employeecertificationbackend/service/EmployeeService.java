@@ -3,6 +3,7 @@ package com.capstoneproject.employeecertificationbackend.service;
 
 import com.capstoneproject.employeecertificationbackend.dto.EmployeeDto;
 import com.capstoneproject.employeecertificationbackend.dto.PasswordResetDto;
+import com.capstoneproject.employeecertificationbackend.dto.ResetPasswordDto;
 import com.capstoneproject.employeecertificationbackend.exception.UserNotFoundException;
 import com.capstoneproject.employeecertificationbackend.models.Admin;
 import com.capstoneproject.employeecertificationbackend.models.Employee;
@@ -93,26 +94,7 @@ public class EmployeeService {
     }
 
 
-    public Optional<Employee> sendPasswordResetLinkToEmployee(PasswordResetDto passwordResetDto){
 
-        Optional<Employee> employeeByEmail = employeeRepository.findEmployeeByEmail(passwordResetDto.getEmail());
-        if(employeeByEmail.isPresent()){
-            String token = UUID.randomUUID().toString();
-            employeeByEmail.get().setToken(token);
-            String url = passwordResetDto.getResetURI() +
-                    "/changePassword?token=" + token+
-                    "email?="+passwordResetDto.getEmail();
-            try {
-                employeeMailSender.sendEmailToResetPassword(passwordResetDto.getEmail(),url);
-            } catch (MailException | MalformedURLException e) {
-                e.getMessage();
-            }
-            return employeeByEmail;
-
-        }
-        return Optional.empty();
-
-    }
 
 
     @Transactional
@@ -198,5 +180,40 @@ public class EmployeeService {
         employeeRepository.save(byId);
 
         return byId;
+    }
+
+    public Optional<Employee> sendPasswordResetLinkToEmployee(PasswordResetDto passwordResetDto){
+
+        Optional<Employee> employeeByEmail = employeeRepository.findEmployeeByEmail(passwordResetDto.getEmail());
+        if(employeeByEmail.isPresent()){
+            String token = UUID.randomUUID().toString();
+            employeeByEmail.get().setToken(token);
+            String url = passwordResetDto.getResetURI() +
+                    "?token=" + token+
+                    "&email="+passwordResetDto.getEmail();
+            try {
+                employeeMailSender.sendEmailToResetPassword(passwordResetDto.getEmail(),url);
+            } catch (MailException | MalformedURLException e) {
+                e.getMessage();
+            }
+            return employeeByEmail;
+
+        }
+        return Optional.empty();
+
+    }
+
+    public Optional<Employee> resetEmployeePassword(ResetPasswordDto resetPasswordDto){
+
+        Optional<Employee> employeeByEmail = employeeRepository.findEmployeeByEmail(resetPasswordDto.getEmail());
+        if(employeeByEmail.isPresent()){
+
+            employeeByEmail.get().setPassword(resetPasswordDto.getPassword());
+//            employeeRepository.save(employeeByEmail.get());
+            return employeeByEmail;
+
+        }
+        return Optional.empty();
+
     }
 }

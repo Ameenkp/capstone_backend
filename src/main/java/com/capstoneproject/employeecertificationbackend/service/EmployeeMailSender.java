@@ -28,16 +28,16 @@ public class EmployeeMailSender {
             msg.setTo(email);
             msg.setSubject("Successfully Created User");
             msg.setText("You Can Login Here :"+"http://localhost:4200/login"+"\n"
-            +"Password :"+password);
+            +"Password : "+password);
             javaMailSender.send(msg);
     }
 
     public void sendEmailToResetPassword(String email, String url) throws MalformedURLException {
-        URL newurl = new URL(url);
+        URL newUrl = new URL(url);
         SimpleMailMessage msg = new SimpleMailMessage();
         msg.setTo(email);
         msg.setSubject("Reset Password Token");
-        msg.setText("resetPasswordLink "+" \r\n "+url);
+        msg.setText("resetPasswordLink "+" \r\n "+newUrl);
         javaMailSender.send(msg);
     }
 }

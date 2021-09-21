@@ -105,6 +105,8 @@ public class EmployeeService {
         newEmployee.setEmail(employee.getEmail());
         newEmployee.setEmpType(employee.getEmpType());
         newEmployee.setPhoneNumber(employee.getPhoneNumber());
+        String token = UUID.randomUUID().toString();
+        newEmployee.setToken(token);
 //        newEmployee.setManager(employee.);
 
         Optional<Employee> employeeByEmail = employeeRepository.findEmployeeByEmail(employee.getEmail());
@@ -147,6 +149,10 @@ public class EmployeeService {
             employeeDto.setPassword(employee.getPassword());
             employeeDto.setName(employee.getName());
             employeeDto.setEmpType(employee.getEmpType());
+            employeeDto.setEmpType(employee.getEmpType());
+            employeeDto.setFirstLogin(employee.isFirstLogin());
+//            String token = UUID.randomUUID().toString();
+//            employeeDto.setToken(token);
 
             return employeeDto;
         } else if (managerRepository.findManagerByEmail(email).stream().anyMatch(user -> user.getPassword().equals(password))) {
@@ -205,10 +211,12 @@ public class EmployeeService {
 
     public Optional<Employee> resetEmployeePassword(ResetPasswordDto resetPasswordDto){
 
-        Optional<Employee> employeeByEmail = employeeRepository.findEmployeeByEmail(resetPasswordDto.getEmail());
+        Optional<Employee> employeeByEmail = employeeRepository.findEmployeeByEmail(
+                resetPasswordDto.getEmail());
         if(employeeByEmail.isPresent()){
 
             employeeByEmail.get().setPassword(resetPasswordDto.getPassword());
+            employeeByEmail.get().setFirstLogin(true);
 //            employeeRepository.save(employeeByEmail.get());
             return employeeByEmail;
 
@@ -216,4 +224,13 @@ public class EmployeeService {
         return Optional.empty();
 
     }
+
+    public Optional<Employee> getEmployeeByEmailAndToken(ResetPasswordDto resetPasswordDto){
+        return employeeRepository.findEmployeeByEmailAndToken(resetPasswordDto.getEmail(),resetPasswordDto.getToken());
+    }
+
+    public Optional<Employee> getEmployeeByEmail(String email){
+        return employeeRepository.findEmployeeByEmail(email);
+    }
 }
+

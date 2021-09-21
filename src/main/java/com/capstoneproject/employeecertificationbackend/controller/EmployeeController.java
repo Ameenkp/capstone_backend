@@ -3,19 +3,18 @@ package com.capstoneproject.employeecertificationbackend.controller;
 import com.capstoneproject.employeecertificationbackend.dto.EmployeeDto;
 import com.capstoneproject.employeecertificationbackend.enums.EmpType;
 import com.capstoneproject.employeecertificationbackend.exception.UserNotFoundException;
-import com.capstoneproject.employeecertificationbackend.models.Admin;
 import com.capstoneproject.employeecertificationbackend.models.Employee;
-import com.capstoneproject.employeecertificationbackend.models.Manager;
 import com.capstoneproject.employeecertificationbackend.service.EmployeeService;
 import com.capstoneproject.employeecertificationbackend.service.ManagerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Optional;
+import java.util.List;
+//@CrossOrigin(origins = "http://localhost:4200")
+
 
 @RestController
 @RequestMapping("api")
@@ -23,14 +22,14 @@ public class EmployeeController {
 
     private final EmployeeService employeeService;
     private final ManagerService managerService;
+    private final EmployeeDto employeeDto;
+
 
     @Autowired
-    private EmployeeDto employeeDto;
-
-    @Autowired
-    public EmployeeController(EmployeeService employeeService, ManagerService managerService) {
+    public EmployeeController(EmployeeService employeeService, ManagerService managerService, EmployeeDto employeeDto) {
         this.employeeService = employeeService;
         this.managerService = managerService;
+        this.employeeDto = employeeDto;
     }
 
 
@@ -46,6 +45,13 @@ public class EmployeeController {
 //            employeeService.createNewUser(employee);
 //        }
 //    }
+
+    @GetMapping("employees/getAll")
+    public List<Employee> getAllEmployees(){
+
+        return employeeService.retrieveAllUsers();
+
+    }
 
     @GetMapping("employees/{email}/{password}")
     public ResponseEntity<EmployeeDto> getEmployeeByEmail(@PathVariable("email") String email,

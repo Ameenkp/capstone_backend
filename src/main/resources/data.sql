@@ -1,6 +1,7 @@
-insert into questions(ques_id, title, optionA, optionB, optionC, optionD, ans, chosen)
+insert into questions(ques_id, title, difficulty,optionA, optionB, optionC, optionD, ans, chosen)
 values (1,
         'What is a correct syntax to output "Hello World" in Java?',
+        'easy',
         'echo "Hello World"',
         'printf("Hello World")',
         'System.error.println("Hello World)',
@@ -9,9 +10,10 @@ values (1,
         -1)
 ;
 
-insert into questions(ques_id, title, optionA, optionB, optionC, optionD, ans, chosen)
+insert into questions(ques_id, title, difficulty,optionA, optionB, optionC, optionD, ans, chosen)
 values (2,
         'Java is short for "JavaScript."',
+        'easy',
         'True',
         'False',
         'False',
@@ -20,9 +22,10 @@ values (2,
         -1)
 ;
 
-insert into questions(ques_id, title, optionA, optionB, optionC, optionD, ans, chosen)
+insert into questions(ques_id, title, difficulty,optionA, optionB, optionC, optionD, ans, chosen)
 values (3,
         'How do you insert COMMENTS in Java code?',
+        'moderate',
         '# This is a comment',
         '/t This is tab',
         '// This is a comment',
@@ -31,9 +34,10 @@ values (3,
         -1)
 ;
 
-insert into questions(ques_id, title, optionA, optionB, optionC, optionD, ans, chosen)
+insert into questions(ques_id, title, difficulty,optionA, optionB, optionC, optionD, ans, chosen)
 values (4,
         'Which data type is used to create a variable that should store text?',
+        'easy',
         'String',
         'long',
         'Char',
@@ -42,9 +46,10 @@ values (4,
         -1)
 ;
 
-insert into questions(ques_id, title, optionA, optionB, optionC, optionD, ans, chosen)
+insert into questions(ques_id, title, difficulty,optionA, optionB, optionC, optionD, ans, chosen)
 values (5,
         'How do you create a variable with the numeric value 5?',
+        'easy',
         'num x = 5',
         'float x = 5',
         'double x =5',
@@ -53,9 +58,10 @@ values (5,
         -1)
 ;
 
-insert into questions(ques_id, title, optionA, optionB, optionC, optionD, ans, chosen)
+insert into questions(ques_id, title, difficulty,optionA, optionB, optionC, optionD, ans, chosen)
 values (6,
         'How do you create a variable with the floating number 2.8?',
+        'moderate',
         'num x = 2.8',
         'float x = 2.8',
         'double x = 2.8',
@@ -64,9 +70,10 @@ values (6,
         -1)
 ;
 
-insert into questions(ques_id, title, optionA, optionB, optionC, optionD, ans, chosen)
+insert into questions(ques_id, title, difficulty,optionA, optionB, optionC, optionD, ans, chosen)
 values (7,
         'Which method can be used to find the length of a string?',
+        'moderate',
         'getSize()',
         'length()',
         'width()',
@@ -75,9 +82,10 @@ values (7,
         -1)
 ;
 
-insert into questions(ques_id, title, optionA, optionB, optionC, optionD, ans, chosen)
+insert into questions(ques_id, title, difficulty,optionA, optionB, optionC, optionD, ans, chosen)
 values (8,
         'Which operator is used to add together two values?',
+        'easy',
         '&&',
         '.add()',
         '++',
@@ -86,9 +94,10 @@ values (8,
         -1)
 ;
 
-insert into questions(ques_id, title, optionA, optionB, optionC, optionD, ans, chosen)
+insert into questions(ques_id, title, difficulty,optionA, optionB, optionC, optionD, ans, chosen)
 values (9,
         'The value of a string variable can be surrounded by single quotes.',
+        'moderate',
         'True',
         'False',
         'False',
@@ -97,9 +106,10 @@ values (9,
         -1)
 ;
 
-insert into questions(ques_id, title, optionA, optionB, optionC, optionD, ans, chosen)
+insert into questions(ques_id, title, difficulty,optionA, optionB, optionC, optionD, ans, chosen)
 values (10,
         'Which operator can be used to compare two values?',
+        'easy',
         '><',
         '!=',
         '&|',
@@ -107,3 +117,71 @@ values (10,
         3,
         -1)
 ;
+insert into questions(ques_id, title, difficulty,optionA, optionB, optionC, optionD, ans, chosen)
+values (11,
+        'In java control statements break, continue, return, try-catch-finally and assert belongs to?',
+        'moderate',
+        'Selection statements',
+        'Loop Statements',
+        'Transfer statements',
+        'Pause Statement',
+        3,
+        -1)
+;
+insert into questions(ques_id, title, difficulty,optionA, optionB, optionC, optionD, ans, chosen)
+values (12,
+        'Which provides runtime environment for java byte code to be executed?',
+        'moderate',
+        'JDBK',
+        'JVM',
+        'JRE',
+        'JAVAC',
+        2,
+        -1)
+;
+insert into questions(ques_id, title, difficulty,optionA, optionB, optionC, optionD, ans, chosen)
+values (13,
+        'Which of the following are not Java keywords ?',
+        'easy',
+        'double',
+        'switch',
+        'then',
+        'instanceof',
+        4,
+        -1)
+;
+insert into questions(ques_id, title, difficulty,optionA, optionB, optionC, optionD, ans, chosen)
+values (14,
+        'Data type long literals are appended by _____',
+        'moderate',
+        'Uppercase',
+        'Lowercase',
+        'Long',
+        'Both A and B',
+        4,
+        -1)
+;
+
+insert into questions(ques_id, title, difficulty,optionA, optionB, optionC, optionD, ans, chosen)
+values (15,
+        'Java language was initially called as ________',
+        'easy',
+        'sumatra',
+        'j++',
+        'Oak',
+        'pine',
+        3,
+        -1)
+;
+insert into questions(ques_id, title, difficulty,optionA, optionB, optionC, optionD, ans, chosen)
+values (16,
+        'What is garbage collection in the context of Java?',
+        'challenging',
+        'Java deletes all unused java files on the system',
+        'Memory used by the object with no reference is automatically reclaimed.',
+        'The JVM cleans output of Java program with error',
+        'Any unused package in a program automatically gets deleted.',
+        2,
+        -1)
+;
+

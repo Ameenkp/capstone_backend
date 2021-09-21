@@ -13,6 +13,7 @@ public class Question {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long quesId;
     private String title;
+    private String difficulty;
     private String optionA;
     private String optionB;
     private String optionC;
@@ -23,9 +24,9 @@ public class Question {
     public Question() {
     }
 
-    public Question(Long quesId, String title, String optionA, String optionB, String optionC, String optionD, int ans, int chosen) {
-        this.quesId = quesId;
+    public Question( String title, String difficulty, String optionA, String optionB, String optionC, String optionD, int ans, int chosen) {
         this.title = title;
+        this.difficulty = difficulty;
         this.optionA = optionA;
         this.optionB = optionB;
         this.optionC = optionC;
@@ -33,6 +34,7 @@ public class Question {
         this.ans = ans;
         this.chosen = chosen;
     }
+
 
     public Long getQuesId() {
         return quesId;
@@ -48,6 +50,14 @@ public class Question {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getDifficulty() {
+        return difficulty;
+    }
+
+    public void setDifficulty(String difficulty) {
+        this.difficulty = difficulty;
     }
 
     public String getOptionA() {

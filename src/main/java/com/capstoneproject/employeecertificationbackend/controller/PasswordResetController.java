@@ -43,4 +43,9 @@ public class PasswordResetController {
         }
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    @GetMapping("getByToken")
+    public Optional<Employee> getEmployeeByEmailAndToken(@RequestBody ResetPasswordDto resetPasswordDto){
+        return employeeService.getEmployeeByEmailAndToken(resetPasswordDto);
+    }
 }

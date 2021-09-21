@@ -1,65 +1,54 @@
 package com.capstoneproject.employeecertificationbackend.controller;
 
 
-import com.capstoneproject.employeecertificationbackend.models.QuestionForm;
-import com.capstoneproject.employeecertificationbackend.models.Result;
-import com.capstoneproject.employeecertificationbackend.service.QuizService;
+import com.capstoneproject.employeecertificationbackend.models.Question;
+import com.capstoneproject.employeecertificationbackend.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
-
 @RestController
-@RequestMapping("api/questions")
+@RequestMapping("api/question")
 public class QuestionController {
 
-    @Autowired
-    Result result;
-    @Autowired
-    QuizService qService;
+    private final QuestionService questionService;
 
-    Boolean submitted = false;
+    @Autowired
+    public QuestionController(QuestionService questionService) {
+        this.questionService = questionService;
+    }
 
     @GetMapping("getAll")
-    public QuestionForm showQuestions(){
-
-        return qService.getQuestions();
+    @ResponseStatus(HttpStatus.OK)
+    public List<Question> getAllQuestions(){
+        return questionService.getAllQuestions();
     }
 
-
-//    @GetMapping("getAll")
-//    public Result getResult() {
-//        return result;
-//    }
-
-
-    @PostMapping("quiz")
-    public QuestionForm quiz() {
-        return qService.getQuestions();
-
+    @GetMapping("getShuffled")
+    @ResponseStatus(HttpStatus.OK)
+    public List<Question> getShuffled(){
+        return questionService.getShuffledQuestions();
     }
 
-    @PostMapping("/submit")
-    public String submit(@ModelAttribute QuestionForm qForm, Model m) {
-        if(!submitted) {
-            result.setTotalCorrect(qService.getResult(qForm));
-            qService.saveScore(result);
-            submitted = true;
-        }
+    @PostMapping("add")
+    public ResponseEntity<Question> getAllQuestions(@RequestBody Question question){
 
-        return "result.html";
+        Question question1 = questionService.addNewQuestion(question);
+        return question1 ==(null)?
+                new ResponseEntity<>(HttpStatus.CONFLICT):
+                new ResponseEntity<>(question1, HttpStatus.CREATED);
     }
+    
+    @DeleteMapping("delete/{title}")
+    public ResponseEntity<Void> deleteQuestion(@PathVariable String title){
 
-    @GetMapping("/score")
-    public String score(Model m) {
-        List<Result> sList = qService.getTopScore();
-        m.addAttribute("sList", sList);
+        return questionService.deleteQuestion(title)?
+                new ResponseEntity<>(HttpStatus.ACCEPTED):
+                new ResponseEntity<>(HttpStatus.NO_CONTENT);
 
-        return "scoreboard.html";
     }
 
 }

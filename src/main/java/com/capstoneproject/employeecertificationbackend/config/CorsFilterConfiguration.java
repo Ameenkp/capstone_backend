@@ -25,7 +25,8 @@ public class CorsFilterConfiguration {
                 "Origin. Accept",
                 "X-Requested-With",
                 "Access-Control-Request-Method",
-                "Access-Control-Request-Headers"
+                "Access-Control-Request-Headers",
+                "strict-origin-when-cross-origin"
         ));
         corsConfiguration.setExposedHeaders(Arrays.asList(
                 "Origin",

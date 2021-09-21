@@ -3,9 +3,9 @@ package com.capstoneproject.employeecertificationbackend.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity(name = "employee")
 @Table(name = "employee")
@@ -72,6 +72,12 @@ public class Employee {
             nullable = false)
     private Manager manager;
 
+    @OneToMany(mappedBy = "employee",
+            cascade=CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.LAZY)
+    private List<Test> tests;
+
     public Employee() {
     }
 
@@ -135,6 +141,10 @@ public class Employee {
         return firstLogin;
     }
 
+    public void setFirstLogin(boolean firstLogin) {
+        this.firstLogin = firstLogin;
+    }
+
     public String getToken() {
         return token;
     }
@@ -143,9 +153,6 @@ public class Employee {
         this.token = token;
     }
 
-    public void setFirstLogin(boolean firstLogin) {
-        this.firstLogin = firstLogin;
-    }
 
     @JsonBackReference
     public Manager getManager() {
@@ -155,6 +162,27 @@ public class Employee {
     public void setManager(Manager manager) {
         this.manager = manager;
     }
+
+
+    public List<Test> getTests() {
+        return tests;
+    }
+
+    public void setTests(List<Test> tests) {
+        this.tests = tests;
+    }
+    public  void addTest(Test test){
+        this.tests.add(test);
+    }
+    public void removeTest(Test test){
+        if (this.tests.contains(test)) {
+            this.tests.remove(test);
+        }
+    }
+
+
+
+
 
     @Override
     public String toString() {

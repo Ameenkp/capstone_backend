@@ -16,6 +16,8 @@ public class EmployeeDto {
     private String password;
     private String phoneNumber;
     private String empType;
+    private boolean firstLogin;
+    private String token;
 
     public EmployeeDto() {
     }
@@ -52,6 +54,7 @@ public class EmployeeDto {
         this.name = name;
     }
 
+
     public String getEmail() {
         return email;
     }
@@ -72,7 +75,24 @@ public class EmployeeDto {
         return phoneNumber;
     }
 
+
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public boolean isFirstLogin() {
+        return firstLogin;
+    }
+
+    public void setFirstLogin(boolean firstLogin) {
+        this.firstLogin = firstLogin;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }

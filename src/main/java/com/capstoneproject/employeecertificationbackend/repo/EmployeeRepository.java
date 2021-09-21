@@ -19,5 +19,7 @@ public interface EmployeeRepository extends JpaRepository<Employee , Long> {
     public Optional<Employee> findEmployeeByEmail(String email);
     Optional<Employee> findEmployeeByToken(String resetToken);
 
+    Optional<Employee> findEmployeeByEmailAndToken(String email, String token);
+
 
 }

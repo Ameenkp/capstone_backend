@@ -18,7 +18,7 @@ public class ManagerConfig {
         return args -> {
 
             Admin admin1 = new Admin(
-                    "admin",
+                    "adminAdp",
                     "Admin@ADP.com",
                     "admin",
                     "admin"

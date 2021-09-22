@@ -33,6 +33,17 @@ public class QuestionController {
         return questionService.getShuffledQuestions();
     }
 
+
+    @GetMapping("{difficulty}")
+    public ResponseEntity<List<Question>> getQuestionsByDifficulty(@PathVariable("difficulty") String difficulty){
+        List<Question> questionsByDifficulty = questionService.getQuestionsByDifficulty(difficulty);
+        return questionsByDifficulty.isEmpty()?
+                new ResponseEntity<>(HttpStatus.NOT_FOUND):
+                new ResponseEntity<>(questionsByDifficulty, HttpStatus.OK);
+    }
+
+
+
     @PostMapping("add")
     public ResponseEntity<Question> getAllQuestions(@RequestBody Question question){
 

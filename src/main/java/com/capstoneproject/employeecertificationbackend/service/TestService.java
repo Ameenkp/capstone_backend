@@ -2,6 +2,7 @@ package com.capstoneproject.employeecertificationbackend.service;
 
 
 import com.capstoneproject.employeecertificationbackend.dto.TestDto;
+import com.capstoneproject.employeecertificationbackend.dto.TestDtoModified;
 import com.capstoneproject.employeecertificationbackend.models.Employee;
 import com.capstoneproject.employeecertificationbackend.models.Test;
 import com.capstoneproject.employeecertificationbackend.repo.EmployeeRepository;
@@ -31,11 +32,11 @@ public class TestService {
         this.employeeRepository = employeeRepository;
     }
 
-    public List<Test> getAllTest(){
+    public List<Test> getAllTest() {
         return testRepository.findAll();
     }
 
-    public Optional<Test> getTestById(Long id){
+    public Optional<Test> getTestById(Long id) {
         return testRepository.findById(id);
     }
 
@@ -50,14 +51,33 @@ public class TestService {
         test.setEmployee(employee.get());
         employee.get().addTest(test);
 
-        String url = String.format("localhost://4200/welcome/:%s",employee.get().getName());
-
+        String url = String.format("localhost://4200/welcome/:%s", employee.get().getName());
         try {
-            employeeMailSender.sendEmailToResetPassword(testDto.getEmail(),url);
+            employeeMailSender.sendEmailToResetPassword(testDto.getEmail(), url);
         } catch (MailException | MalformedURLException e) {
             e.getMessage();
         }
 
+
+    }
+
+
+    public List<Test> getAllTestsByEmail(String email) {
+        Optional<Employee> employeeByEmail = employeeRepository.findEmployeeByEmail(email);
+        return testRepository.findAllTestByEmployee(employeeByEmail.get());
+    }
+
+    @Transactional
+    public void addScoreToTest(String email, TestDtoModified test) {
+
+        Optional<Employee> employeeByEmail = employeeRepository.findEmployeeByEmail(email);
+//        testRepository.findAllTestByEmployee(employeeByEmail.get())
+//                .stream()
+//                .filter(test1 -> test1.getTitle().equals(test.getTitle()))
+//                .findFirst()
+//                .get()
+//                .setScore(test.getScore());
+        testRepository.findTestByTitle(test.getTitle()).setScore(test.getScore());
 
     }
 }

@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.*;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @Transactional
@@ -23,26 +24,26 @@ public class QuestionService {
         this.questionRepository = questionRepository;
     }
 
-    public List<Question> getAllQuestions(){
+    public List<Question> getAllQuestions() {
         return questionRepository.findAll();
     }
 
-    public Question addNewQuestion(Question question){
+    public Question addNewQuestion(Question question) {
         Optional<Question> questionByTitle =
                 questionRepository.findQuestionByTitle(question.getTitle());
-        if(questionByTitle.isPresent()){
+        if (questionByTitle.isPresent()) {
             return null;
         }
         return questionRepository.save(question);
     }
 
-    public boolean deleteQuestion(String title){
+    public boolean deleteQuestion(String title) {
         Optional<Question> questionByTitle = questionRepository.findQuestionByTitle(title);
         questionRepository.delete(questionByTitle.get());
         return true;
     }
 
-    public List<Question> getShuffledQuestions(){
+    public List<Question> getShuffledQuestions() {
         List<Question> all = questionRepository.findAll();
         Collections.shuffle(all);
         return all.stream().limit(15).collect(Collectors.toList());
@@ -50,5 +51,11 @@ public class QuestionService {
     }
 
 
+    public List<Question> getQuestionsByDifficulty(String difficulty) {
 
+        List<Question> questionsByDifficulty = questionRepository.findQuestionsByDifficulty(difficulty);
+        Collections.shuffle(questionsByDifficulty);
+        return questionsByDifficulty.stream().limit(15).collect(Collectors.toList());
+
+    }
 }

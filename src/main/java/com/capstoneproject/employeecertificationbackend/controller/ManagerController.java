@@ -36,6 +36,16 @@ public class ManagerController {
         return new ResponseEntity<>(employees,HttpStatus.OK);
     }
 
+    @GetMapping("manager/{email}/employees-with-results")
+    public ResponseEntity<List<Employee>> getAllEmployeesUnderManagerByEmail(@PathVariable("email") String email){
+
+        List<Employee> employees = employeeService.retrieveAllUsersUnderManagerByEmail(email);
+        if(employees.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(employees,HttpStatus.OK);
+    }
+
     @GetMapping("getmanagers")
     public List<Manager> getManagers(){
         return managerService.getAllManagers();

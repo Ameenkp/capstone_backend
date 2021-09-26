@@ -139,6 +139,11 @@ public class EmployeeService {
         return employeeRepository.findAllByManager(byId);
     }
 
+    public List<Employee> retrieveAllUsersUnderManagerByEmail(String email) {
+        Optional<Manager> byId = managerRepository.findManagerByEmail(email);
+        return employeeRepository.findAllByManager(byId);
+    }
+
     public EmployeeDto getEmployeeByEmailAndPassword(String email, String password) {
         EmployeeDto employeeDto = new EmployeeDto();
 

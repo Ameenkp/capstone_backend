@@ -57,10 +57,7 @@ public class TestService {
         } catch (MailException | MalformedURLException e) {
             e.getMessage();
         }
-
-
     }
-
 
     public List<Test> getAllTestsByEmail(String email) {
         Optional<Employee> employeeByEmail = employeeRepository.findEmployeeByEmail(email);
@@ -77,7 +74,9 @@ public class TestService {
 //                .findFirst()
 //                .get()
 //                .setScore(test.getScore());
-        testRepository.findTestByTitle(test.getTitle()).setScore(test.getScore());
+        Test testByTitle = testRepository.findTestByTitle(test.getTitle());
+        testByTitle.setScore(test.getScore());
+        testByTitle.setAttempted(true);
 
     }
 }

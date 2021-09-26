@@ -1,6 +1,7 @@
 package com.capstoneproject.employeecertificationbackend.models;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
@@ -21,16 +22,31 @@ public class Result {
             strategy = GenerationType.SEQUENCE
     )
     private Long id;
-    private String username;
-    private int totalCorrect = 0;
+
+    private String question;
+
+    private String correct;
+    
+    private String answerOfUser;
+
+
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(
+            name = "test_id",
+            referencedColumnName = "test_id",
+            nullable = false)
+    private Test test;
+    
+    
 
     public Result() {
     }
 
-    public Result(Long id, String username, int totalCorrect) {
-        this.id = id;
-        this.username = username;
-        this.totalCorrect = totalCorrect;
+    public Result(String question, String correct, String answerOfUser) {
+        this.question = question;
+        this.correct = correct;
+        this.answerOfUser = answerOfUser;
     }
 
     public Long getId() {
@@ -41,19 +57,35 @@ public class Result {
         this.id = id;
     }
 
-    public String getUsername() {
-        return username;
+    public String getQuestion() {
+        return question;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setQuestion(String question) {
+        this.question = question;
     }
 
-    public int getTotalCorrect() {
-        return totalCorrect;
+    public String getCorrect() {
+        return correct;
     }
 
-    public void setTotalCorrect(int totalCorrect) {
-        this.totalCorrect = totalCorrect;
+    public void setCorrect(String correct) {
+        this.correct = correct;
+    }
+
+    public String getAnswerOfUser() {
+        return answerOfUser;
+    }
+
+    public void setAnswerOfUser(String answerOfUser) {
+        this.answerOfUser = answerOfUser;
+    }
+
+    public Test getTest() {
+        return test;
+    }
+
+    public void setTest(Test test) {
+        this.test = test;
     }
 }

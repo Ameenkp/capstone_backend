@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @Entity
 public class Test {
@@ -47,12 +48,23 @@ public class Test {
     )
     private Integer score;
 
+    @Column(
+            name = "attempted"
+    )
+    private boolean attempted;
+
     @JsonIgnore
     @ManyToOne
     @JoinColumn(
             name = "employee_id",
             referencedColumnName = "employee_id")
     private Employee employee;
+
+    @OneToMany(mappedBy = "test",
+            cascade=CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.LAZY)
+    private List<Result> results;
 
     public Test(String title, String difficulty, Integer score) {
         this.title = title;
@@ -95,11 +107,30 @@ public class Test {
         this.score = score;
     }
 
+    public boolean isAttempted() {
+        return attempted;
+    }
+
+    public void setAttempted(boolean attempted) {
+        this.attempted = attempted;
+    }
+
     public Employee getEmployee() {
         return employee;
     }
 
     public void setEmployee(Employee employee) {
         this.employee = employee;
+    }
+
+    public List<Result> getResults() {
+        return results;
+    }
+
+    public void setResults(List<Result> results) {
+        this.results = results;
+    }
+    public void addResult(Result result){
+        this.results.add(result);
     }
 }
